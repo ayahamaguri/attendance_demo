@@ -32,6 +32,17 @@
 import { defineComponent, ref } from '@nuxtjs/composition-api'
 import 'youtube-player'
 
+interface Events {
+  onReady: object
+}
+
+interface YtPlayerIF {
+  height: string
+  width: string
+  videoId: string
+  events: Events[]
+}
+
 export default defineComponent({
   setup() {
     // 2. This code loads the IFrame Player API code asynchronously.
@@ -45,7 +56,8 @@ export default defineComponent({
     //   プレーヤー API コードがダウンロードされると、onYouTubeIframeAPIReady 関数が実行されます。
     // コードのこの部分では、組み込もうとしている動画プレーヤーを表すグローバル変数 player を定義します。
     // 続いて、関数によって動画プレーヤー オブジェクトが作成されます。
-    const ytPlayer = ref()
+    let ytPlayer = ref<YtPlayerIF>()
+
     const onYouTubeIframeAPIReady = () => {
       ytPlayer = new YT.Player('player', {
         height: '360',
@@ -64,7 +76,8 @@ export default defineComponent({
     //   }
     const onPlayerReady = () => {}
     return {
-      // stopVideo,
+      ytPlayer,
+      onYouTubeIframeAPIReady,
     }
   },
 })
